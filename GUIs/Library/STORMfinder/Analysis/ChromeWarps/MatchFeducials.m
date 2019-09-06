@@ -12,7 +12,7 @@ function [matched1,matched2,parameters] = MatchFeducials(image1spots,image2spots
 % maxTrueSeparation -- maximum distance allowed between matched points 
 
 global scratchPath
-troubleshoot = false; 
+troubleshoot = true; 
 
 % -------------------------------------------------------------------------
 % Default variables
@@ -73,7 +73,7 @@ end
 
 % % figure for troubleshooting correlation alignment; 
 if troubleshoot
-    figure(10); clf; 
+    figure; clf; 
     subplot(1,2,1); Ncolor(cat(3,I1,I2)); hold on; 
     plot(image1spots(:,1)/stp,image1spots(:,2)/stp,'ro');
     plot(image2spots(:,1)/stp,image2spots(:,2)/stp,'bo');
@@ -119,17 +119,18 @@ else
     matched2 = matches12(:,2); 
 end
     
-
-[idx1,dist1] = knnsearch(image1spots,image2spotsw); %  indices of image1spots nearest for each point in image2spots 
-matches21 = [ (1:size(image2spots,1))',idx1 ];
-matches21(  dist1>parameters.maxD, :) = [];   % remove distant points
-[v,n] = occurrences(idx1);
-multihits1 = v(n>1);
-multihits1_idx = ismember( matches21(:,2), multihits1);
-matches21(multihits1_idx,:) = [];
-
-matched1 = matches21(:,2); 
-matched2 = matches21(:,1); 
+% EJ uncommented this on 2019/08/20 - I think this is a bug and should have
+% been uncommented, since it's a repitition of what's above
+% [idx1,dist1] = knnsearch(image1spots,image2spotsw); %  indices of image1spots nearest for each point in image2spots 
+% matches21 = [ (1:size(image2spots,1))',idx1 ];
+% matches21(  dist1>parameters.maxD, :) = [];   % remove distant points
+% [v,n] = occurrences(idx1);
+% multihits1 = v(n>1);
+% multihits1_idx = ismember( matches21(:,2), multihits1);
+% matches21(multihits1_idx,:) = [];
+% 
+% matched1 = matches21(:,2); 
+% matched2 = matches21(:,1); 
 
 % idx(dist>parameters.maxD) = NaN;
 % 

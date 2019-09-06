@@ -12,10 +12,10 @@ function [xshift,yshift,parameters] = CorrAlign(Im1,Im2,varargin)
 % Default variables
 % -------------------------------------------------------------------------
 defaults = cell(0,3);
-defaults(end+1,:) = {'region', 'nonnegative', 200};
+defaults(end+1,:) = {'region', 'nonnegative', 500};
 defaults(end+1,:) = {'showplot', 'boolean', false};
 defaults(end+1,:) = {'upsample', 'positive', 1};
-defaults(end+1,:) = {'subregion', 'boolean', true};
+defaults(end+1,:) = {'subregion', 'boolean', false};
 
 % -------------------------------------------------------------------------
 % Parse necessary input
@@ -57,8 +57,9 @@ yshift = (cy-Hc2);
 
 if parameters.showplot
    subplot(1,3,1); Ncolor(cat(3,Im1,Im2));
-   Im2 = TranslateImage(Im2,xshift,yshift);
-   subplot(1,3,2); Ncolor(cat(3,Im1,Im2)); freezeColors;
+%    Im2 = TranslateImage(Im2,xshift,yshift);
+   Im2 = imtranslate(Im2,[xshift yshift]);
+   subplot(1,3,2); Ncolor(cat(3,Im1,Im2)); % freezeColors;
    subplot(1,3,3); imagesc(corrMmini); colormap(jet(256));
 end
 
